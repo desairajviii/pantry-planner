@@ -1,0 +1,13 @@
+# Dependencies and build output (match at any depth)
+node_modules/
+dist/
+
+# Secrets
+.env
+*.local
+
+# Logs and OS/editor files
+*.log
+.DS_Store
+.vscode/
+.idea/
