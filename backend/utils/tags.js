@@ -16,8 +16,11 @@ export const MAX_STEPS = [3];
 // Parse and validate filters
 // raw = comma-separated query string, e.g. "vegan,kosher"
 export function parseTags(raw) {
-  if (typeof raw !== "string") return []; // missing, or repeated ?tags= (array)
-  return raw
+  const value = Array.isArray(raw) ? raw.join(",") : raw; // accept both query forms
+  if (typeof value !== "string") {
+    return []; // missing or malformed
+  }
+  return value
     .split(",")
     .map((tag) => tag.trim().toLowerCase())
     .filter((tag) => FILTER_TAGS.includes(tag)); // drop anything not in FILTER_TAGS
