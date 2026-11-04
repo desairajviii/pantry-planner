@@ -4,6 +4,9 @@ import { fileURLToPath } from "node:url";
 import { connect } from "./db/connection.js";
 import recipesRouter from "./routes/recipes.js";
 import mealPlansRouter from "./routes/mealPlans.js";
+import session from "express-session";
+import passport from "./auth/passport.js";
+import authRouter from "./routes/auth.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,12 +16,34 @@ const FRONTEND_DIST = fileURLToPath(
 
 app.use(express.json());
 
+// Hosting services sit behind a proxy; this lets secure cookies work there
+app.set("trust proxy", 1);
+
+// Sessions keep users logged in between requests.
+// The default store is in memory: fine locally, but sessions reset when the
+// server restarts. Switch to connect-mongo before deploying.
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    },
+  }),
+);
+app.use(passport.session());
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
 app.use("/api/recipes", recipesRouter);
 app.use("/api/meal-plans", mealPlansRouter);
+app.use("/api/auth", authRouter);
 
 // Unknown API paths return JSON, not the React page
 app.use("/api", (req, res) => {
@@ -40,5 +65,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something went wrong" });
 });
 
-await connect();
+const db = await connect();
+// Unique usernames, enforced by the database
+await db.collection("users").createIndex({ username: 1 }, { unique: true });
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
