@@ -1,12 +1,12 @@
 import express from "express";
 import { ObjectId } from "mongodb";
 import { getDb } from "../db/connection.js";
+import { buildFilter } from "../utils/tags.js";
 
 const router = express.Router();
 
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 50;
-const MAX_TAGS = 10;
 
 // Fields for the list view. Steps and description are only sent on the
 // detail page, since they're the largest fields.
@@ -24,52 +24,17 @@ function toPositiveInt(value, fallback) {
   return Number.isInteger(n) && n > 0 ? n : fallback;
 }
 
-// "vegetarian, Easy" -> ["vegetarian", "easy"]
-function parseTags(value) {
-  if (typeof value !== "string") {
-    return [];
-  }
-  return value
-    .split(",")
-    .map((tag) => tag.trim().toLowerCase())
-    .filter(Boolean)
-    .slice(0, MAX_TAGS);
-}
 
-// Turns query parameters into a MongoDB filter
-function buildFilter(query) {
-  const filter = {};
-
-  // Selected tags combine with AND: a recipe must have every one
-  const tags = parseTags(query.tags);
-  if (tags.length > 0) {
-    filter.tags = { $all: tags };
-  }
-
-  // Time and steps filter on the recipe fields, since those tags are unreliable
-  const maxMinutes = toPositiveInt(query.maxMinutes, null);
-  if (maxMinutes) {
-    filter.minutes = { $lte: maxMinutes };
-  }
-
-  const maxSteps = toPositiveInt(query.maxSteps, null);
-  if (maxSteps) {
-    filter.stepCount = { $lte: maxSteps };
-  }
-
-  // Name search uses the text index from the seed script
-  const search =
-    typeof query.q === "string" ? query.q.trim().slice(0, 100) : "";
-  if (search) {
-    filter.$text = { $search: search };
-  }
-
+function buildQuery(query) {
+  const filter = buildFilter(query); // permitted tags, maxMinutes, maxSteps
+  const search = typeof query.q === "string" ? query.q.trim().slice(0, 100) : "";
+  if (search) filter.$text = { $search: search }; // uses the name text index
   return { filter, hasSearch: Boolean(search) };
 }
 
 // GET /api/recipes?tags=vegetarian,easy&maxMinutes=30&maxSteps=3&q=pasta&page=1
 router.get("/", async (req, res) => {
-  const { filter, hasSearch } = buildFilter(req.query);
+  const { filter, hasSearch } = buildQuery(req.query);
   const page = toPositiveInt(req.query.page, 1);
   const limit = Math.min(
     toPositiveInt(req.query.limit, DEFAULT_LIMIT),
