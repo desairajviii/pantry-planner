@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { connect } from "./db/connection.js";
 import recipesRouter from "./routes/recipes.js";
+import mealPlansRouter from "./routes/mealPlans.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/recipes", recipesRouter);
+app.use("/api/meal-plans", mealPlansRouter);
 
 // Unknown API paths return JSON, not the React page
 app.use("/api", (req, res) => {
