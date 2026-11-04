@@ -2,6 +2,7 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { connect } from "./db/connection.js";
+import recipesRouter from "./routes/recipes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,8 +16,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// API routes go here as they're built, e.g.:
-// app.use("/api/recipes", recipesRouter);
+app.use("/api/recipes", recipesRouter);
 
 // Unknown API paths return JSON, not the React page
 app.use("/api", (req, res) => {
@@ -28,6 +28,14 @@ app.use("/api", (req, res) => {
 app.use(express.static(FRONTEND_DIST));
 app.get(/^(?!\/api).*/, (req, res) => {
   res.sendFile(path.join(FRONTEND_DIST, "index.html"));
+});
+
+// Unexpected errors return JSON instead of Express's default HTML page.
+// Express needs all four arguments to treat this as an error handler.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: "Something went wrong" });
 });
 
 await connect();
