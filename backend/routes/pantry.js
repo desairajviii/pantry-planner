@@ -1,7 +1,7 @@
 // Pantry routes: list, add, edit, delete items, and pantry-based recipe search
 // Mounted in server.js as app.use("/api/pantry", pantryRouter)
 import { Router } from "express";
-import { ObjectId } from "mongodb";
+import { toObjectId } from "../utils/objectId.js";
 import { getDb } from "../db/connection.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { buildFilter } from "../utils/tags.js";
@@ -24,12 +24,6 @@ router.use(requireAuth);
  
 // Get the pantry collection from db
 const pantry = () => getDb().collection("pantry");
- 
-// Convert a route param to an ObjectId, or null if it isn't 24-char hex
-// id = req.params.id
-function toObjectId(id) {
-  return /^[a-f\d]{24}$/i.test(id) ? new ObjectId(id) : null;
-}
  
 // Validate and clean name and quantity from a request body
 // partial = true for PUT

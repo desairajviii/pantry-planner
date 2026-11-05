@@ -2,6 +2,7 @@ import express from "express";
 import { ObjectId } from "mongodb";
 import { getDb } from "../db/connection.js";
 import { requireAuth } from "../middleware/requireAuth.js";
+import { toObjectId } from "../utils/objectId.js";
 
 const router = express.Router();
 
@@ -16,13 +17,6 @@ const mealPlans = () => getDb().collection("mealPlans");
 
 // The owner's own ID doesn't need to go back to the browser
 const HIDE_OWNER = { userId: 0 };
-
-// Turns a string ID into an ObjectId, or null if it isn't a valid one
-function toObjectId(id) {
-  return typeof id === "string" && /^[a-f\d]{24}$/i.test(id)
-    ? new ObjectId(id)
-    : null;
-}
 
 // "2026-11-09" -> Date at UTC midnight, or null if it isn't a real date.
 // Impossible dates like "2026-02-30" roll over to another day in JavaScript,
