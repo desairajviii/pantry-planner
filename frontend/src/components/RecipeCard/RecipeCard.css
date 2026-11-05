@@ -1,0 +1,81 @@
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.recipe-card_name {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  /* Food.com names are all lowercase, e.g. "0 point soup ww" */
+  text-transform: capitalize;
+}
+
+.recipe-card_name-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.recipe-card_name-button:hover {
+  text-decoration: underline;
+}
+
+.recipe-card_meta {
+  margin: 0;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+.recipe-card_badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recipe-card_badge {
+  padding: 0.1rem 0.55rem;
+  border-radius: 999px;
+  background: #e8f1e4;
+  color: #2f5a27;
+  font-size: 0.8rem;
+}
+
+.recipe-card_missing {
+  margin: 0;
+  color: #8a4b12;
+  font-size: 0.9rem;
+}
+
+.recipe-card_missing--none {
+  color: #2f5a27;
+}
+
+.recipe-card_add {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.recipe-card_add:hover {
+  background: #244620;
+}
