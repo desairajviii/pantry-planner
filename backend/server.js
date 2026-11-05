@@ -7,6 +7,7 @@ import mealPlansRouter from "./routes/mealPlans.js";
 import session from "express-session";
 import passport from "./auth/passport.js";
 import authRouter from "./routes/auth.js";
+import pantryRouter from "./routes/pantry.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,6 +45,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/recipes", recipesRouter);
 app.use("/api/meal-plans", mealPlansRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/pantry", pantryRouter);
 
 // Unknown API paths return JSON, not the React page
 app.use("/api", (req, res) => {
