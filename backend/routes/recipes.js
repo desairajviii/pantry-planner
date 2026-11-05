@@ -1,7 +1,7 @@
 import express from "express";
-import { ObjectId } from "mongodb";
+import { toObjectId } from "../utils/objectId.js";
 import { getDb } from "../db/connection.js";
-import { buildFilter } from "../utils/tags.js";
+import { buildFilter, FILTER_GROUPS } from "../utils/tags.js";
 
 const router = express.Router();
 
@@ -24,13 +24,18 @@ function toPositiveInt(value, fallback) {
   return Number.isInteger(n) && n > 0 ? n : fallback;
 }
 
-
 function buildQuery(query) {
   const filter = buildFilter(query); // permitted tags, maxMinutes, maxSteps
-  const search = typeof query.q === "string" ? query.q.trim().slice(0, 100) : "";
+  const search =
+    typeof query.q === "string" ? query.q.trim().slice(0, 100) : "";
   if (search) filter.$text = { $search: search }; // uses the name text index
   return { filter, hasSearch: Boolean(search) };
 }
+
+// GET /api/recipes/filters: the filter options, for FilterPanel
+router.get("/filters", (req, res) => {
+  res.json(FILTER_GROUPS);
+});
 
 // GET /api/recipes?tags=vegetarian,easy&maxMinutes=30&maxSteps=3&q=pasta&page=1
 router.get("/", async (req, res) => {
@@ -70,14 +75,10 @@ router.get("/", async (req, res) => {
 
 // GET /api/recipes/:id: one recipe with ingredients and steps
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  if (!/^[a-f\d]{24}$/i.test(id)) {
-    return res.status(404).json({ error: "Recipe not found" });
-  }
-
-  const recipe = await getDb()
-    .collection("recipes")
-    .findOne({ _id: new ObjectId(id) });
+  const _id = toObjectId(req.params.id);
+  const recipe = _id
+    ? await getDb().collection("recipes").findOne({ _id })
+    : null;
 
   if (!recipe) {
     return res.status(404).json({ error: "Recipe not found" });
