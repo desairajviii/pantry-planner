@@ -1,30 +1,89 @@
 import { useEffect, useState } from "react";
-import { getRecipes } from "../../api/recipes.js";
-import RecipeCard from "../RecipeCard/RecipeCard.jsx";
+import { getCurrentUser, logout } from "../../api/auth.js";
+import AuthForm from "../AuthForm/AuthForm.jsx";
+import NavBar from "../NavBar/NavBar.jsx";
 import "./App.css";
 
-function App() {
-  const [recipes, setRecipes] = useState([]);
+// The screens in the nav, in order
+const VIEWS = [
+  { id: "recipes", label: "Recipes" },
+  { id: "plans", label: "Meal plans" },
+  { id: "pantry", label: "Pantry" },
+  { id: "pantry-search", label: "Cook from pantry" },
+  { id: "grocery", label: "Grocery lists" },
+  { id: "help", label: "How to use" },
+];
 
+// Shows the current screen. Each placeholder is replaced by its real
+// component as we build them.
+function renderView(viewId) {
+  const view = VIEWS.find((v) => v.id === viewId);
+  return (
+    <section>
+      <h1>{view.label}</h1>
+      <p>This screen is being built.</p>
+    </section>
+  );
+}
+
+function App() {
+  // undefined = still checking the session; null = logged out
+  const [user, setUser] = useState(undefined);
+  const [view, setView] = useState("recipes");
+  const [error, setError] = useState("");
+
+  // On first load, check whether the browser already has a login session
   useEffect(() => {
-    getRecipes({ tags: ["vegetarian"], limit: 3 }).then((data) =>
-      setRecipes(data.recipes),
-    );
+    getCurrentUser()
+      .then(setUser)
+      .catch(() => {
+        setUser(null);
+        setError("Couldn't reach the server. Try refreshing the page.");
+      });
   }, []);
 
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      // Show the login screen even if the request failed
+      setUser(null);
+      setView("recipes");
+    }
+  }
+
+  if (user === undefined) {
+    return <p className="app_status">Loading…</p>;
+  }
+
+  if (!user) {
+    return (
+      <main className="app_auth">
+        <h1 className="app_title">Pantry Planner</h1>
+        <p className="app_tagline">
+          Plan your week from what you already have.
+        </p>
+        {error && (
+          <p className="app_error" role="alert">
+            {error}
+          </p>
+        )}
+        <AuthForm onAuthenticated={setUser} />
+      </main>
+    );
+  }
+
   return (
-    <main>
-      <h1>Pantry Planner</h1>
-      {recipes.map((recipe) => (
-        <RecipeCard
-          key={recipe._id}
-          recipe={recipe}
-          onSelect={(id) => console.log("select", id)}
-          onAddToPlan={(r) => console.log("add to plan", r.name)}
-          missingIngredients={["onion"]}
-        />
-      ))}
-    </main>
+    <>
+      <NavBar
+        views={VIEWS}
+        currentView={view}
+        onNavigate={setView}
+        username={user.username}
+        onLogout={handleLogout}
+      />
+      <main className="app_main">{renderView(view)}</main>
+    </>
   );
 }
 

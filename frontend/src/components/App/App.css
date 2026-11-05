@@ -1,0 +1,30 @@
+.app_status {
+  padding: 2rem;
+  text-align: center;
+  color: #5c5c55;
+}
+
+.app_auth {
+  max-width: 24rem;
+  margin: 4rem auto;
+  padding: 0 1rem;
+}
+
+.app_title {
+  margin: 0 0 0.25rem;
+}
+
+.app_tagline {
+  margin: 0 0 1.5rem;
+  color: #5c5c55;
+}
+
+.app_error {
+  color: #a3261c;
+}
+
+.app_main {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
