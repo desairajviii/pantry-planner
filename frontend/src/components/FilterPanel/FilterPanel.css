@@ -1,0 +1,56 @@
+.filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.filter-panel_heading {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.filter-panel_group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.filter-panel_legend {
+  margin-bottom: 0.25rem;
+  padding: 0;
+  font-weight: 600;
+}
+
+.filter-panel_option {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.filter-panel_option input {
+  accent-color: #2f5a27;
+}
+
+.filter-panel_clear {
+  align-self: flex-start;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: none;
+  color: #2f5a27;
+  font: inherit;
+  cursor: pointer;
+}
+
+.filter-panel_clear:hover {
+  background: #e8f1e4;
+}

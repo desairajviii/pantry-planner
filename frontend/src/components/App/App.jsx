@@ -3,6 +3,7 @@ import { getCurrentUser, logout } from "../../api/auth.js";
 import AuthForm from "../AuthForm/AuthForm.jsx";
 import NavBar from "../NavBar/NavBar.jsx";
 import "./App.css";
+import RecipeBrowser from "../RecipeBrowser/RecipeBrowser.jsx";
 
 // The screens in the nav, in order
 const VIEWS = [
@@ -14,9 +15,13 @@ const VIEWS = [
   { id: "help", label: "How to use" },
 ];
 
-// Shows the current screen. Each placeholder is replaced by its real
-// component as we build them.
+// Shows the current screen. Placeholders are replaced by their real
+// components as we build them.
 function renderView(viewId) {
+  if (viewId === "recipes") {
+    return <RecipeBrowser />;
+  }
+
   const view = VIEWS.find((v) => v.id === viewId);
   return (
     <section>
