@@ -25,3 +25,9 @@ export function deleteMealPlan(id) {
     method: "DELETE",
   });
 }
+
+// The API only needs day, slot, and recipeId for each entry;
+// the server fills in recipeName itself
+export function toEntryInput({ day, slot, recipeId }) {
+  return { day, slot, recipeId };
+}

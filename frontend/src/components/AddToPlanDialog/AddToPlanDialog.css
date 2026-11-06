@@ -1,0 +1,89 @@
+.add-to-plan {
+  width: min(26rem, calc(100vw - 2rem));
+  padding: 1.5rem;
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.add-to-plan::backdrop {
+  background: rgba(20, 20, 18, 0.45);
+}
+
+.add-to-plan_title {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  text-transform: capitalize;
+}
+
+.add-to-plan_form {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.add-to-plan_form label {
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+
+.add-to-plan_form select {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+  background: #ffffff;
+}
+
+.add-to-plan_status {
+  color: #5c5c55;
+}
+
+.add-to-plan_warning {
+  margin: 0.4rem 0 0;
+  color: #8a4b12;
+  font-size: 0.9rem;
+}
+
+.add-to-plan_error {
+  margin: 0.4rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
+
+.add-to-plan_saved {
+  margin: 0.4rem 0 0;
+  color: #2f5a27;
+  font-weight: 600;
+}
+
+.add-to-plan_buttons {
+  margin-top: 0.9rem;
+}
+
+.add-to-plan_buttons button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.add-to-plan_buttons button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.add-to-plan_close {
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #2f5a27;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}

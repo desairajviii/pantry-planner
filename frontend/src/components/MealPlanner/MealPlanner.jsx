@@ -1,29 +1,13 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getMealPlan, updateMealPlan } from "../../api/mealPlans.js";
+import {
+  getMealPlan,
+  toEntryInput,
+  updateMealPlan,
+} from "../../api/mealPlans.js";
+import { DAYS, SLOTS } from "../../config/mealSlots.js";
 import { addDays, formatDate, toDateInput } from "../../utils/dates.js";
 import "./MealPlanner.css";
-
-const DAYS = [
-  { id: "mon", label: "Mon" },
-  { id: "tue", label: "Tue" },
-  { id: "wed", label: "Wed" },
-  { id: "thu", label: "Thu" },
-  { id: "fri", label: "Fri" },
-  { id: "sat", label: "Sat" },
-  { id: "sun", label: "Sun" },
-];
-
-const SLOTS = [
-  { id: "breakfast", label: "Breakfast" },
-  { id: "lunch", label: "Lunch" },
-  { id: "dinner", label: "Dinner" },
-];
-
-// The API only needs day, slot, and recipeId; the server fills in recipeName
-function toEntryInput({ day, slot, recipeId }) {
-  return { day, slot, recipeId };
-}
 
 // One meal plan as a weekly grid: edit the name and week, remove meals
 function MealPlanner({ planId, onBack }) {
@@ -185,7 +169,7 @@ function MealPlanner({ planId, onBack }) {
                                 className="meal-planner_remove"
                                 onClick={() => removeEntry(day.id, slot.id)}
                                 disabled={saving}
-                                aria-label={`Remove ${entry.recipeName} from ${day.label} ${slot.label}`}
+                                aria-label={`Remove ${entry.recipeName} from ${day.name} ${slot.label}`}
                               >
                                 Remove
                               </button>

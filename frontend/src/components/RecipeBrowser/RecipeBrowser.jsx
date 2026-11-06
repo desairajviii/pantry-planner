@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import { getFilterGroups, getRecipes } from "../../api/recipes.js";
+import AddToPlanDialog from "../AddToPlanDialog/AddToPlanDialog.jsx";
 import FilterPanel from "../FilterPanel/FilterPanel.jsx";
 import RecipeCard from "../RecipeCard/RecipeCard.jsx";
 import RecipeDetail from "../RecipeDetail/RecipeDetail.jsx";
@@ -15,8 +15,9 @@ function searchKey(filters, search, page) {
   return JSON.stringify([filters, search, page]);
 }
 
-// Search, filter, and page through recipes, and open one to see its details
-function RecipeBrowser({ onAddToPlan }) {
+// Search, filter, and page through recipes, open one to see its details,
+// and add recipes to a meal plan
+function RecipeBrowser() {
   const [groups, setGroups] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [searchInput, setSearchInput] = useState(""); // what's typed
@@ -28,6 +29,7 @@ function RecipeBrowser({ onAddToPlan }) {
     error: "",
   });
   const [selectedId, setSelectedId] = useState(null); // recipe being viewed
+  const [recipeToAdd, setRecipeToAdd] = useState(null); // open in the dialog
 
   // Load the filter options once
   useEffect(() => {
@@ -80,15 +82,26 @@ function RecipeBrowser({ onAddToPlan }) {
     setPage(1);
   }
 
+  // Shown on top of either the grid or the detail view
+  const dialog = recipeToAdd && (
+    <AddToPlanDialog
+      recipe={recipeToAdd}
+      onClose={() => setRecipeToAdd(null)}
+    />
+  );
+
   // Show one recipe instead of the grid. RecipeBrowser stays mounted, so
   // the filters, search, and page are still there when the user goes back.
   if (selectedId) {
     return (
-      <RecipeDetail
-        recipeId={selectedId}
-        onBack={() => setSelectedId(null)}
-        onAddToPlan={onAddToPlan}
-      />
+      <>
+        <RecipeDetail
+          recipeId={selectedId}
+          onBack={() => setSelectedId(null)}
+          onAddToPlan={setRecipeToAdd}
+        />
+        {dialog}
+      </>
     );
   }
 
@@ -160,7 +173,7 @@ function RecipeBrowser({ onAddToPlan }) {
                 <RecipeCard
                   recipe={recipe}
                   onSelect={setSelectedId}
-                  onAddToPlan={onAddToPlan}
+                  onAddToPlan={setRecipeToAdd}
                 />
               </li>
             ))}
@@ -189,12 +202,10 @@ function RecipeBrowser({ onAddToPlan }) {
           )}
         </div>
       </div>
+
+      {dialog}
     </section>
   );
 }
-
-RecipeBrowser.propTypes = {
-  onAddToPlan: PropTypes.func,
-};
 
 export default RecipeBrowser;
