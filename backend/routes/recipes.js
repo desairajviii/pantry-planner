@@ -52,7 +52,7 @@ router.get("/", async (req, res) => {
     : LIST_FIELDS;
   const sort = hasSearch
     ? { score: { $meta: "textScore" }, _id: 1 }
-    : { name: 1, _id: 1 };
+    : { _id: 1 };
 
   const recipes = getDb().collection("recipes");
   const [items, total] = await Promise.all([

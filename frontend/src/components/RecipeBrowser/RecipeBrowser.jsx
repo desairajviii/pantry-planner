@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { getFilterGroups, getRecipes } from "../../api/recipes.js";
 import FilterPanel from "../FilterPanel/FilterPanel.jsx";
 import RecipeCard from "../RecipeCard/RecipeCard.jsx";
+import RecipeDetail from "../RecipeDetail/RecipeDetail.jsx";
 import "./RecipeBrowser.css";
 
 const EMPTY_FILTERS = { tags: [], maxMinutes: null, maxSteps: null };
@@ -14,8 +15,8 @@ function searchKey(filters, search, page) {
   return JSON.stringify([filters, search, page]);
 }
 
-// Search, filter, and page through recipes
-function RecipeBrowser({ onSelectRecipe, onAddToPlan }) {
+// Search, filter, and page through recipes, and open one to see its details
+function RecipeBrowser({ onAddToPlan }) {
   const [groups, setGroups] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [searchInput, setSearchInput] = useState(""); // what's typed
@@ -26,6 +27,7 @@ function RecipeBrowser({ onSelectRecipe, onAddToPlan }) {
     data: null,
     error: "",
   });
+  const [selectedId, setSelectedId] = useState(null); // recipe being viewed
 
   // Load the filter options once
   useEffect(() => {
@@ -76,6 +78,18 @@ function RecipeBrowser({ onSelectRecipe, onAddToPlan }) {
     setSearchInput("");
     setSearch("");
     setPage(1);
+  }
+
+  // Show one recipe instead of the grid. RecipeBrowser stays mounted, so
+  // the filters, search, and page are still there when the user goes back.
+  if (selectedId) {
+    return (
+      <RecipeDetail
+        recipeId={selectedId}
+        onBack={() => setSelectedId(null)}
+        onAddToPlan={onAddToPlan}
+      />
+    );
   }
 
   return (
@@ -145,7 +159,7 @@ function RecipeBrowser({ onSelectRecipe, onAddToPlan }) {
               <li key={recipe._id}>
                 <RecipeCard
                   recipe={recipe}
-                  onSelect={onSelectRecipe}
+                  onSelect={setSelectedId}
                   onAddToPlan={onAddToPlan}
                 />
               </li>
@@ -180,7 +194,6 @@ function RecipeBrowser({ onSelectRecipe, onAddToPlan }) {
 }
 
 RecipeBrowser.propTypes = {
-  onSelectRecipe: PropTypes.func,
   onAddToPlan: PropTypes.func,
 };
 
