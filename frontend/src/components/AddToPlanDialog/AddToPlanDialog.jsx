@@ -12,7 +12,9 @@ import "./AddToPlanDialog.css";
 // Pick a plan, day, and meal for one recipe.
 // Uses the built-in <dialog> element, which closes with Esc and keeps
 // keyboard focus inside while it's open.
-function AddToPlanDialog({ recipe, onClose }) {
+// initialPlanId (optional): the plan to start on, e.g. when opened from
+// that plan's own suggestions. Otherwise the first plan is selected.
+function AddToPlanDialog({ recipe, initialPlanId, onClose }) {
   const dialogRef = useRef(null);
   const [plans, setPlans] = useState(null); // null while loading
   const [loadError, setLoadError] = useState("");
@@ -32,14 +34,17 @@ function AddToPlanDialog({ recipe, onClose }) {
     }
   }, []);
 
-  // Load the user's plans and pick the first one
+  // Load the user's plans and pick which one to start on
   useEffect(() => {
     let ignore = false;
     getMealPlans()
       .then((data) => {
         if (ignore) return;
         setPlans(data);
-        if (data.length > 0) setPlanId(data[0]._id);
+        if (data.length === 0) return;
+        // Start on the plan the dialog was opened from, if there is one
+        const start = data.find((p) => p._id === initialPlanId) ?? data[0];
+        setPlanId(start._id);
       })
       .catch((err) => {
         if (!ignore) setLoadError(err.message);
@@ -47,7 +52,7 @@ function AddToPlanDialog({ recipe, onClose }) {
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [initialPlanId]);
 
   const plan = plans?.find((p) => p._id === planId);
   const existing = plan?.entries.find((e) => e.day === day && e.slot === slot);
@@ -193,6 +198,7 @@ AddToPlanDialog.propTypes = {
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
   }).isRequired,
+  initialPlanId: PropTypes.string,
   onClose: PropTypes.func.isRequired,
 };
 

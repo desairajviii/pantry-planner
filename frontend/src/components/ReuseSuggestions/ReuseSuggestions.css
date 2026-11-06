@@ -1,0 +1,43 @@
+.reuse-suggestions {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #d6d6cc;
+}
+
+.reuse-suggestions_title {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.reuse-suggestions_intro,
+.reuse-suggestions_status {
+  margin: 0 0 1rem;
+  color: #5c5c55;
+}
+
+.reuse-suggestions_error {
+  color: #a3261c;
+  font-weight: 600;
+}
+
+.reuse-suggestions_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reuse-suggestions_item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.reuse-suggestions_shared {
+  margin: 0;
+  color: #2f5a27;
+  font-size: 0.9rem;
+  font-weight: 600;
+}

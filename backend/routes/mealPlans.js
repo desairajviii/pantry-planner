@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import { getDb } from "../db/connection.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { toObjectId } from "../utils/objectId.js";
+import { isCovered } from "../utils/ingredientMatch.js";
 
 const router = express.Router();
 
@@ -187,6 +188,79 @@ router.delete("/:id", async (req, res) => {
     return res.status(404).json({ error: "Meal plan not found" });
   }
   res.status(204).end();
+});
+
+const MAX_SUGGESTIONS = 6;
+const MIN_SHARED = 2;
+
+// GET /api/meal-plans/:id/suggestions
+// Recipes that reuse ingredients this plan already needs, so leftovers from
+// one meal (half a cabbage, the rest of the cilantro) get used in another.
+router.get("/:id/suggestions", async (req, res) => {
+  const _id = toObjectId(req.params.id);
+  const plan = _id
+    ? await mealPlans().findOne(
+        { _id, userId: req.user._id },
+        { projection: { entries: 1 } },
+      )
+    : null;
+
+  if (!plan) {
+    return res.status(404).json({ error: "Meal plan not found" });
+  }
+
+  const plannedIds = [
+    ...new Set(plan.entries.map((e) => e.recipeId.toString())),
+  ].map((id) => new ObjectId(id));
+  if (plannedIds.length === 0) {
+    return res.json({ suggestions: [] });
+  }
+
+  const recipes = getDb().collection("recipes");
+  const planned = await recipes
+    .find({ _id: { $in: plannedIds } }, { projection: { ingredients: 1 } })
+    .toArray();
+
+  // Everything the plan already needs, minus staples like salt and oil that
+  // everyone has anyway (isCovered with an empty pantry only checks staples)
+  const leftovers = [...new Set(planned.flatMap((r) => r.ingredients))].filter(
+    (ingredient) => !isCovered(ingredient, []),
+  );
+  if (leftovers.length === 0) {
+    return res.json({ suggestions: [] });
+  }
+
+  const suggestions = await recipes
+    .aggregate([
+      // Recipes not already in the plan that use any of those ingredients
+      {
+        $match: { ingredients: { $in: leftovers }, _id: { $nin: plannedIds } },
+      },
+      // Which of the plan's ingredients each one reuses, and how many
+      {
+        $addFields: {
+          sharedIngredients: { $setIntersection: ["$ingredients", leftovers] },
+        },
+      },
+      { $addFields: { sharedCount: { $size: "$sharedIngredients" } } },
+      { $match: { sharedCount: { $gte: MIN_SHARED } } },
+      // Most reuse first; quicker recipes break ties
+      { $sort: { sharedCount: -1, minutes: 1, _id: 1 } },
+      { $limit: MAX_SUGGESTIONS },
+      {
+        $project: {
+          name: 1,
+          minutes: 1,
+          tags: 1,
+          ingredients: 1,
+          stepCount: 1,
+          sharedIngredients: 1,
+        },
+      },
+    ])
+    .toArray();
+
+  res.json({ suggestions });
 });
 
 export default router;

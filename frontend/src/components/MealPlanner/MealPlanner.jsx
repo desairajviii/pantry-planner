@@ -8,6 +8,7 @@ import {
 import { DAYS, SLOTS } from "../../config/mealSlots.js";
 import { addDays, formatDate, toDateInput } from "../../utils/dates.js";
 import "./MealPlanner.css";
+import ReuseSuggestions from "../ReuseSuggestions/ReuseSuggestions.jsx";
 
 // One meal plan as a weekly grid: edit the name and week, remove meals
 function MealPlanner({ planId, onBack }) {
@@ -21,6 +22,7 @@ function MealPlanner({ planId, onBack }) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [saveError, setSaveError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
   // Load the plan, and fill the form with its name and week
   useEffect(() => {
@@ -39,7 +41,7 @@ function MealPlanner({ planId, onBack }) {
     return () => {
       ignore = true;
     };
-  }, [planId]);
+  }, [planId, reloadKey]);
 
   const loading = response.id !== planId;
   const { plan } = response;
@@ -187,8 +189,16 @@ function MealPlanner({ planId, onBack }) {
           </div>
 
           <p className="meal-planner_hint">
-            To add meals, open Recipes and choose Add to plan on any recipe.
+            To add meals, open Recipes and choose Add to plan, or pick a
+            suggestion below.
           </p>
+
+          <ReuseSuggestions
+            planId={planId}
+            planVersion={plan.updatedAt}
+            mealCount={plan.entries.length}
+            onPlanChanged={() => setReloadKey((k) => k + 1)}
+          />
         </>
       )}
     </section>

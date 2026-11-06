@@ -31,3 +31,8 @@ export function deleteMealPlan(id) {
 export function toEntryInput({ day, slot, recipeId }) {
   return { day, slot, recipeId };
 }
+
+// Recipes that reuse ingredients already in this plan
+export function getPlanSuggestions(id) {
+  return request(`/meal-plans/${encodeURIComponent(id)}/suggestions`);
+}
