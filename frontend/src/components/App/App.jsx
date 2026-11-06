@@ -4,6 +4,7 @@ import AuthForm from "../AuthForm/AuthForm.jsx";
 import NavBar from "../NavBar/NavBar.jsx";
 import "./App.css";
 import RecipeBrowser from "../RecipeBrowser/RecipeBrowser.jsx";
+import MealPlanList from "../MealPlanList/MealPlanList.jsx";
 
 // The screens in the nav, in order
 const VIEWS = [
@@ -20,6 +21,10 @@ const VIEWS = [
 function renderView(viewId) {
   if (viewId === "recipes") {
     return <RecipeBrowser />;
+  }
+
+  if (viewId === "plans") {
+    return <MealPlanList />;
   }
 
   const view = VIEWS.find((v) => v.id === viewId);

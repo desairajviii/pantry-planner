@@ -1,0 +1,121 @@
+.meal-planner_back {
+  margin-bottom: 1rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #2f5a27;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.meal-planner_back:hover {
+  text-decoration: underline;
+}
+
+.meal-planner_title {
+  margin: 0 0 0.25rem;
+}
+
+.meal-planner_meta,
+.meal-planner_status,
+.meal-planner_hint {
+  margin: 0 0 0.75rem;
+  color: #5c5c55;
+}
+
+.meal-planner_error {
+  color: #a3261c;
+  font-weight: 600;
+}
+
+.meal-planner_details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.meal-planner_details label {
+  font-weight: 600;
+}
+
+.meal-planner_details input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.meal-planner_details button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* The grid scrolls sideways on narrow screens instead of squashing */
+.meal-planner_grid-wrap {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.meal-planner_grid {
+  width: 100%;
+  min-width: 48rem;
+  border-collapse: collapse;
+}
+
+.meal-planner_grid th,
+.meal-planner_grid td {
+  padding: 0.6rem;
+  border: 1px solid #ecece5;
+  text-align: left;
+  vertical-align: top;
+}
+
+.meal-planner_grid thead th {
+  background: #f1f4ee;
+}
+
+.meal-planner_date {
+  display: block;
+  color: #5c5c55;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.meal-planner_entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.meal-planner_recipe {
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.meal-planner_remove {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #a3261c;
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.meal-planner_empty {
+  color: #a3a39a;
+  font-size: 0.85rem;
+}
