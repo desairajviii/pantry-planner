@@ -23,9 +23,13 @@ function AddToPlanDialog({ recipe, onClose }) {
   const [error, setError] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
 
-  // Open as a modal as soon as it appears
+  // Open as a modal as soon as it appears. StrictMode runs effects twice in
+  // development, and showModal() throws if the dialog is already open.
   useEffect(() => {
-    dialogRef.current?.showModal();
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) {
+      dialog.showModal();
+    }
   }, []);
 
   // Load the user's plans and pick the first one
