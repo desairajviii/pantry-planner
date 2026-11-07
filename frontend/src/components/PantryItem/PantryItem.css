@@ -1,0 +1,130 @@
+/* <li> – one pantry row (view or edit mode) */
+.pantry-item {
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <li> modifier – added when the item's use-by date is within SOON_DAYS */
+.pantry-item-soon {
+  border-left-color: #b7791f;
+}
+
+/* <li> modifier – added when the use-by date has passed */
+.pantry-item-expired {
+  border-left-color: #a3261c;
+}
+
+/* <div> – view-mode layout: item details on the left, buttons on the right */
+.pantry-item_view {
+  display: flex;
+  flex-wrap: wrap; /* buttons drop below the details on narrow screens */
+  align-items: center; /* vertically centre details and buttons */
+  justify-content: space-between; /* push the details and buttons to opposite ends */
+  gap: 0.75rem;
+}
+
+/* <h3> – item name with the expiry badge beside it */
+.pantry-item_name {
+  display: flex; /* line the name and badge up in one row */
+  flex-wrap: wrap; /* badge moves under the name if there isn't room */
+  align-items: center;
+  gap: 0.5rem; /* space between name and badge */
+  margin: 0;
+  font-size: 1.05rem;
+  text-transform: capitalize;
+}
+
+/* <span> inside <h3> – "Expired" / "Use soon" badge */
+.pantry-item_badge {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* badge colours for "Use soon" */
+.pantry-item_badge-soon {
+  background: #fdf3dc;
+  color: #7a4f0f;
+}
+
+/* badge colours for "Expired" */
+.pantry-item_badge-expired {
+  background: #fbe5e2;
+  color: #a3261c;
+}
+
+/* <p> – quantity and use-by date under the name */
+.pantry-item_meta {
+  margin: 0.2rem 0 0;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+/* <form> – edit mode: labels, inputs and buttons in one wrapping row */
+.pantry-item_form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+/* <label>s in the edit form */
+.pantry-item_form label {
+  font-weight: 600;
+}
+
+/* name, quantity and date <input>s in the edit form */
+.pantry-item_form input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* <div> – button group (Edit/Remove in view mode, Save/Cancel in edit mode) */
+.pantry-item_actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* every button in the group – green filled style (Edit, Save) */
+.pantry-item_actions button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer; /* hand cursor on hover */
+}
+
+/* buttons while a save or delete is in progress */
+.pantry-item_actions button:disabled {
+  opacity: 0.6; /* faded to show they can't be clicked */
+  cursor: wait; /* busy cursor */
+}
+
+/* Cancel button – green outline */
+.pantry-item_actions .pantry-item_secondary {
+  background: none;
+  color: #2f5a27;
+}
+
+/* Remove button – red outline*/
+.pantry-item_actions .pantry-item_delete {
+  border-color: #a3261c;
+  background: none;
+  color: #a3261c;
+}
+
+/* <p role="alert"> – save or delete error shown under the row */
+.pantry-item_error {
+  margin: 0.75rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
