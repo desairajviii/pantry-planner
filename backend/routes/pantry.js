@@ -19,13 +19,34 @@ const MAX_NAME = 100; // max characters for an item name
 const MAX_QUANTITY = 50; // max characters for free-text quantity
 const DEFAULT_MAX_MISSING = 3; // search default
 const RESULT_LIMIT = 50; // cap search payload size
+const SOON_DAYS = 3; // expiring soon window (days)
+const DAY_MS = 24 * 60 * 60 * 1000; // one day in milliseconds
 
 router.use(requireAuth);
 
 // Get the pantry collection from db
 const pantry = () => getDb().collection("pantry");
 
-// Validate and clean name and quantity from a request body
+// Parse a use-by date from "YYYY-MM-DD" into a Date at UTC midnight
+// Returns { value: Date }, { value: null } to clear it, or { error } on bad input
+// raw = body.useBy
+function parseUseBy(raw) {
+  if (raw === null || raw === "") {
+    return { value: null }; // empty clears the date
+  }
+  if (typeof raw !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    return { error: "Use-by date must be YYYY-MM-DD." };
+  }
+  const date = new Date(`${raw}T00:00:00Z`); // UTC midnight
+
+  // Reject invalid dates
+  if (Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== raw) {
+    return { error: "Use-by date is not a real date." };
+  }
+  return { value: date };
+}
+
+// Validate and clean name, quantity, and use-by date from a request body
 // partial = true for PUT
 function parseItem(body, partial) {
   const fields = {};
@@ -57,6 +78,15 @@ function parseItem(body, partial) {
     fields.quantity = quantity;
   }
 
+  // useBy is optional, "" or null clears it
+  if (body.useBy !== undefined) {
+    const { error, value } = parseUseBy(body.useBy);
+    if (error) {
+      return { error };
+    }
+    fields.useBy = value;
+  }
+
   // edit must change something
   if (partial && Object.keys(fields).length === 0) {
     return { error: "Nothing to update." };
@@ -85,6 +115,22 @@ function parseMaxMissing(raw) {
   return Number.isInteger(value) && value >= 0 ? value : null;
 }
 
+// Pick names of items whose use-by date falls between today & today + SOON_DAYS (inclusive)
+// Expired items are excluded
+// items = pantry docs with name and useBy, now = current time
+function expiringTerms(items, now = new Date()) {
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // today at UTC midnight
+  const last = today + SOON_DAYS * DAY_MS; // last day of the "soon" window
+  const soon = items
+    .filter((item) => item.useBy) // only items with a date
+    .filter((item) => {
+      const day = item.useBy.getTime(); // stored at UTC midnight
+      return day >= today && day <= last; // inside the window, not expired
+    })
+    .map((item) => item.name); // keep the name only
+  return toPantryTerms(soon); // normalize
+}
+
 // GET /api/pantry - list user's pantry alphabetically
 router.get("/", async (req, res, next) => {
   try {
@@ -108,12 +154,12 @@ router.get("/search", async (req, res, next) => {
         .json({ error: "maxMissing must be a whole number, 0 or more." });
     }
 
-    // load user's pantry names as match terms
-    const names = await pantry()
-      .find({ userId: req.user._id }, { projection: { name: 1 } })
-      .map((item) => item.name) // keep the name string only
+    // load user's pantry names and use-by dates
+    const items = await pantry()
+      .find({ userId: req.user._id }, { projection: { name: 1, useBy: 1 } })
       .toArray();
-    const terms = toPantryTerms(names);
+    const terms = toPantryTerms(items.map((item) => item.name)); // all match terms
+    const soonTerms = expiringTerms(items); // subset expiring soon, for ranking
 
     // staples don't drive the candidate query
     const queryTerms = terms.filter((term) => !isStaple(term));
@@ -135,12 +181,14 @@ router.get("/search", async (req, res, next) => {
     const results = candidates
       .map((recipe) => ({
         ...recipe,
-        ...scoreIngredients(recipe.ingredients, terms),
+        ...scoreIngredients(recipe.ingredients, terms, soonTerms),
       }))
       .filter((recipe) => recipe.missing.length <= maxMissing)
       .sort(
         (a, b) =>
-          a.missing.length - b.missing.length || b.coverage - a.coverage, // sort by fewest missing, then highest coverage
+          a.missing.length - b.missing.length ||  // sort by fewest missing
+          b.expiringUsed - a.expiringUsed || // then most soon-to-expire items used
+          b.coverage - a.coverage, // then highest coverage
       )
       .slice(0, RESULT_LIMIT);
 
@@ -170,6 +218,7 @@ router.post("/", async (req, res, next) => {
       userId: req.user._id,
       name: fields.name,
       quantity: fields.quantity ?? "", // quantity is optional, default empty
+      useBy: fields.useBy ?? null, // optional, null when not set 
       createdAt: now,
       updatedAt: now,
     };
@@ -180,7 +229,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// PUT /api/pantry/:id - edit name and/or quantity
+// PUT /api/pantry/:id - edit name, quantity, and/or useBy
 router.put("/:id", async (req, res, next) => {
   try {
     const id = toObjectId(req.params.id);

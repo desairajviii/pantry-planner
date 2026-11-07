@@ -40,9 +40,14 @@ export function isCovered(ingredient, pantryTerms) {
 
 // Score a recipe's ingredients against the pantry items
 // ingredients = recipe ingredient, pantryTerms = output of toPantryTerms()
-export function scoreIngredients(ingredients, pantryTerms) {
+// expiringTerms = soon-to-expire pantry terms
+export function scoreIngredients(ingredients, pantryTerms, expiringTerms = []) {
   const missing = ingredients.filter((ing) => !isCovered(ing, pantryTerms)); // uncovered ingredients
   const total = ingredients.length;
   const coverage = total ? (total - missing.length) / total : 0; // avoid zero division
-  return { missing, coverage };
+  const normalized = ingredients.map(normalizeName);
+  const expiringUsed = expiringTerms.filter((term) =>
+    normalized.some((ing) => ing.includes(term)),
+  ).length;
+  return { missing, coverage, expiringUsed };
 }
