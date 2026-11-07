@@ -1,0 +1,109 @@
+/* <h1> – "Pantry" page heading */
+.pantry-manager_title {
+  margin: 0 0 1rem;
+}
+
+/* <form> – "Add an item" box */
+.pantry-manager_form {
+  margin-bottom: 1.5rem; /* space between the form and the list */
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <h2> – "Add an item" heading inside the form */
+.pantry-manager_form-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* <div> – labels, inputs and the Add button in one wrapping row */
+.pantry-manager_fields {
+  display: flex;
+  flex-wrap: wrap; 
+  align-items: center; /* vertically centre labels, inputs and button */
+  gap: 0.5rem 0.75rem;
+}
+
+/* <label>s in the add form */
+.pantry-manager_fields label {
+  font-weight: 600;
+}
+
+/* name, quantity and date <input>s in the add form */
+.pantry-manager_fields input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* "Add item" submit button – green fill */
+.pantry-manager_fields button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer; /* hand cursor on hover */
+}
+
+/* Add button while the list is loading or an add is in progress */
+.pantry-manager_fields button:disabled {
+  opacity: 0.6; /* faded to show it can't be clicked */
+  cursor: wait; /* busy cursor */
+}
+
+/* <p role="alert"> – add error under the form or load error above the list */
+.pantry-manager_error {
+  margin: 0.75rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
+
+/* <p> – "Loading pantry…" while the first request runs */
+.pantry-manager_status {
+  color: #5c5c55;
+}
+
+/* <p> – message shown when the pantry has no items */
+.pantry-manager_empty {
+  padding: 1rem;
+  border: 1px dashed #b5b5aa;
+  border-radius: 8px;
+  color: #5c5c55;
+}
+
+/* <div role="status"> – expiry summary */
+.pantry-manager_summary {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid #b7791f; /* amber bar */
+  border-radius: 4px;
+  background: #fdf3dc; /* pale amber, matches the "Use soon" badge */
+}
+
+/* both <p>s in the summary – summary line and hint */
+.pantry-manager_summary p {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* <p> – "Expired items still count as in stock…" hint, shown only when items have expired */
+.pantry-manager_summary .pantry-manager_hint {
+  margin-top: 0.25rem; /* small gap below summary line */
+  color: #5c5c55;
+  font-weight: 400; 
+  font-size: 0.9rem;
+}
+
+/* <ul> – the list of PantryItem rows */
+.pantry-manager_items {
+  display: grid; 
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none; /* no bullets */
+}
