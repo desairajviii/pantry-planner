@@ -5,6 +5,7 @@ import NavBar from "../NavBar/NavBar.jsx";
 import "./App.css";
 import RecipeBrowser from "../RecipeBrowser/RecipeBrowser.jsx";
 import MealPlanList from "../MealPlanList/MealPlanList.jsx";
+import PantryManager from "../PantryManager/PantryManager.jsx";
 
 // The screens in the nav, in order
 const VIEWS = [
@@ -25,6 +26,10 @@ function renderView(viewId) {
 
   if (viewId === "plans") {
     return <MealPlanList />;
+  }
+
+  if (viewId === "pantry") {
+    return <PantryManager />;
   }
 
   const view = VIEWS.find((v) => v.id === viewId);
