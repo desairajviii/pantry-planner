@@ -23,6 +23,13 @@ function PantryItem({ item, status, onSave, onDelete }) {
     setEditing(true);
   }
 
+  // Close the edit form, discarding the draft and any error from a failed save
+  function cancelEdit() {
+    setError(""); // clear the message
+    setDraft(null); // drop unsaved changes
+    setEditing(false); // back to the view row
+  }
+
   // Copy one edit-form input into the draft, input names match the draft keys
   function handleFieldChange(event) {
     const { name, value } = event.target;
@@ -97,7 +104,7 @@ function PantryItem({ item, status, onSave, onDelete }) {
             <button
               type="button"
               className="pantry-item_secondary"
-              onClick={() => setEditing(false)}
+              onClick={cancelEdit}
               disabled={busy}
             >
               Cancel
