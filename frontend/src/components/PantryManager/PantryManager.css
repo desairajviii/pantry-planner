@@ -21,7 +21,7 @@
 /* <div> – labels, inputs and the Add button in one wrapping row */
 .pantry-manager_fields {
   display: flex;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   align-items: center; /* vertically centre labels, inputs and button */
   gap: 0.5rem 0.75rem;
 }
@@ -95,13 +95,13 @@
 .pantry-manager_summary .pantry-manager_hint {
   margin-top: 0.25rem; /* small gap below summary line */
   color: #5c5c55;
-  font-weight: 400; 
+  font-weight: 400;
   font-size: 0.9rem;
 }
 
 /* <ul> – the list of PantryItem rows */
 .pantry-manager_items {
-  display: grid; 
+  display: grid;
   gap: 0.75rem;
   margin: 0;
   padding: 0;

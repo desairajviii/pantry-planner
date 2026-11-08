@@ -24,7 +24,7 @@ function countText(loading, count) {
     return "Finding recipes…";
   }
   if (count === RESULT_LIMIT) {
-    return `Top ${RESULT_LIMIT} matches`; 
+    return `Top ${RESULT_LIMIT} matches`;
   }
   return `${count} ${count === 1 ? "recipe" : "recipes"}`;
 }
@@ -90,7 +90,7 @@ function PantrySearch() {
     />
   );
 
-  // Show one recipe instead of results 
+  // Show one recipe instead of results
   // PantrySearch stays mounted so filters and results are preserved when the user goes back
   if (selectedId) {
     return (

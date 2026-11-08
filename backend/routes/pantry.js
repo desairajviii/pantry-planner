@@ -115,11 +115,28 @@ function parseMaxMissing(raw) {
   return Number.isInteger(value) && value >= 0 ? value : null;
 }
 
+// Resolve "today" for the expiring window as milliseconds at UTC midnight
+// Uses the client's local date (?today=YYYY-MM-DD) when it is within one day of the
+// server's UTC date otherwise falls back to the UTC date
+// raw = req.query.today, now = current time
+function resolveToday(raw, now = new Date()) {
+  const utcToday = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+  ); // server's date at UTC midnight
+  const { error, value } = parseUseBy(raw ?? "");
+  if (error || !value) {
+    return utcToday; // keep the old UTC behavior
+  }
+  const offset = Math.abs(value.getTime() - utcToday); // distance from the server's date
+  return offset <= DAY_MS ? value.getTime() : utcToday; // reject dates no real timezone could produce
+}
+
 // Pick names of items whose use-by date falls between today & today + SOON_DAYS (inclusive)
 // Expired items are excluded
-// items = pantry docs with name and useBy, now = current time
-function expiringTerms(items, now = new Date()) {
-  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()); // today at UTC midnight
+/// items = pantry docs with name and useBy, today = output of resolveToday()
+function expiringTerms(items, today) {
   const last = today + SOON_DAYS * DAY_MS; // last day of the "soon" window
   const soon = items
     .filter((item) => item.useBy) // only items with a date
@@ -159,7 +176,7 @@ router.get("/search", async (req, res, next) => {
       .find({ userId: req.user._id }, { projection: { name: 1, useBy: 1 } })
       .toArray();
     const terms = toPantryTerms(items.map((item) => item.name)); // all match terms
-    const soonTerms = expiringTerms(items); // subset expiring soon, for ranking
+    const soonTerms = expiringTerms(items, resolveToday(req.query.today)); // subset expiring soon, for ranking
 
     // staples don't drive the candidate query
     const queryTerms = terms.filter((term) => !isStaple(term));
@@ -186,7 +203,7 @@ router.get("/search", async (req, res, next) => {
       .filter((recipe) => recipe.missing.length <= maxMissing)
       .sort(
         (a, b) =>
-          a.missing.length - b.missing.length ||  // sort by fewest missing
+          a.missing.length - b.missing.length || // sort by fewest missing
           b.expiringUsed - a.expiringUsed || // then most soon-to-expire items used
           b.coverage - a.coverage, // then highest coverage
       )
@@ -218,7 +235,7 @@ router.post("/", async (req, res, next) => {
       userId: req.user._id,
       name: fields.name,
       quantity: fields.quantity ?? "", // quantity is optional, default empty
-      useBy: fields.useBy ?? null, // optional, null when not set 
+      useBy: fields.useBy ?? null, // optional, null when not set
       createdAt: now,
       updatedAt: now,
     };
