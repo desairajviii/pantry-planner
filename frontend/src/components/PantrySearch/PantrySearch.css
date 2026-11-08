@@ -1,0 +1,100 @@
+/* Page heading */
+.pantry-search_title {
+  margin: 0 0 0.5rem;
+}
+
+/* Muted line under the heading explaining how results are ranked */
+.pantry-search_intro {
+  max-width: 42rem;
+  margin: 0 0 1.25rem;
+  color: #5c5c55;
+}
+
+/* Filters beside the results on wide screens, stacked on phones */
+.pantry-search_layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Wide screens: fixed-width filter sidebar beside the results */
+@media (min-width: 52rem) {
+  .pantry-search_layout {
+    grid-template-columns: 15rem 1fr;
+    align-items: start;
+  }
+}
+
+/* Row holding the "Missing ingredients, at most" label and select */
+.pantry-search_missing-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Bold label */
+.pantry-search_missing-cap label {
+  font-weight: 600;
+}
+
+/* Style select like the app's text inputs */
+.pantry-search_missing-cap select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* Muted result count */
+.pantry-search_count {
+  margin: 0 0 0.75rem;
+  color: #5c5c55;
+}
+
+/* Show dashed box when no recipes match */
+.pantry-search_empty {
+  padding: 1rem;
+  border: 1px dashed #b5b5aa;
+  border-radius: 8px;
+  color: #5c5c55;
+}
+
+/* Red error message for failed filter or search requests */
+.pantry-search_error {
+  color: #a3261c;
+  font-weight: 600;
+}
+
+/* Responsive card grid */
+.pantry-search_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Expiring note stacked above grid item card */
+.pantry-search_grid > li {
+  display: flex;
+  flex-direction: column;
+}
+
+/* stretch cards in the same row to the same height */
+.pantry-search_grid > li > article {
+  flex: 1;
+}
+
+/* Amber "Uses N items expiring soon" tab at the top of the card */
+.pantry-search_expiring {
+  align-self: flex-start;
+  margin: 0 0 -1px;
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px 6px 0 0;
+  background: #fdf3dc;
+  color: #b7791f;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
