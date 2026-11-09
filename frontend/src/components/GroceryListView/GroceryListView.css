@@ -1,0 +1,114 @@
+/* "← Back to grocery lists" button – green text, no fill */
+.grocery-list-view_back {
+  margin-bottom: 1rem;
+  padding: 0.3rem 0;
+  border: none;
+  background: none;
+  color: #2f5a27;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* <h1> – list name */
+.grocery-list-view_title {
+  margin: 0;
+  text-transform: none;
+}
+
+/* <p> – "N of M items checked off" */
+.grocery-list-view_meta {
+  margin: 0.2rem 0 1rem;
+  color: #5c5c55;
+}
+
+/* <form>/<div> – rename row and add-item row
+ labels, inputs and button wrap together */
+.grocery-list-view_fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+/* <label>s in both forms */
+.grocery-list-view_fields label {
+  font-weight: 600;
+}
+
+/* <input>s in both forms */
+.grocery-list-view_fields input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* Rename and Add item buttons – green fill */
+.grocery-list-view_fields button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* buttons while save is in progress */
+.grocery-list-view_fields button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* <p aria-live> – "Saving…"*/
+.grocery-list-view_status {
+  min-height: 1.5em;
+  margin: 0.5rem 0;
+  color: #5c5c55;
+}
+
+/* <p role="alert"> – load, rename or add error */
+.grocery-list-view_error {
+  margin: 0.75rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
+
+/* <p> – shown when the pantry covered every ingredient */
+.grocery-list-view_empty {
+  padding: 1rem;
+  border: 1px dashed #b5b5aa;
+  border-radius: 8px;
+  color: #5c5c55;
+}
+
+/* <ul> – GroceryItem rows */
+.grocery-list-view_items {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* <p> – note what generation leaves out */
+.grocery-list-view_hint {
+  margin: 1rem 0;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+/* <form> – "Add an item" box */
+.grocery-list-view_add {
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <h2> – "Add an item" heading */
+.grocery-list-view_form-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}

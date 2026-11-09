@@ -1,0 +1,134 @@
+/* <h1> – "Grocery lists" page heading */
+.grocery-list-index_title {
+  margin: 0 0 1rem;
+}
+
+/* <form> – "New list from a meal plan" box */
+.grocery-list-index_form {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <h2> – heading inside the form */
+.grocery-list-index_form-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* <div> – labels, select, input and button in one wrapping row */
+.grocery-list-index_fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+/* <label>s in the form */
+.grocery-list-index_fields label {
+  font-weight: 600;
+}
+
+/* plan <select> and name <input> */
+.grocery-list-index_fields select,
+.grocery-list-index_fields input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* Generate, Open and Delete buttons – green fill */
+.grocery-list-index_fields button,
+.grocery-list-index_actions button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Generate button while plans load or a list is being generated */
+.grocery-list-index_fields button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* <p> – explanation and "no meal plans" hints under the form */
+.grocery-list-index_hint {
+  margin: 0.75rem 0 0;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+/* <p role="alert"> – generate, load or delete error */
+.grocery-list-index_error {
+  margin: 0.75rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
+
+/* <p> – "Loading lists…" */
+.grocery-list-index_status {
+  color: #5c5c55;
+}
+
+/* <p> – message when there are no lists */
+.grocery-list-index_empty {
+  padding: 1rem;
+  border: 1px dashed #b5b5aa;
+  border-radius: 8px;
+  color: #5c5c55;
+}
+
+/* <ul> – the list of saved grocery lists */
+.grocery-list-index_items {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* <li> – one saved list w details left, buttons right */
+.grocery-list-index_item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <h3> – list name */
+.grocery-list-index_name {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* <p> – created date and source plan */
+.grocery-list-index_meta {
+  margin: 0.2rem 0 0;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+/* <div> – Open and Delete buttons */
+.grocery-list-index_actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Delete button – red outline */
+.grocery-list-index_actions .grocery-list-index_delete {
+  border-color: #a3261c;
+  background: none;
+  color: #a3261c;
+}

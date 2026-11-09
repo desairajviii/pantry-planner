@@ -1,0 +1,121 @@
+/* <li> – one grocery row (view/edit mode) */
+.grocery-item {
+  padding: 0.75rem 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <li> modifier – fade checked-off items */
+.grocery-item-checked {
+  background: #f4f4ef;
+}
+
+/* <div> – view-mode layout */
+.grocery-item_view {
+  display: flex;
+  flex-wrap: wrap; /* buttons drop below on narrow screens */
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* <label> – clickable checkbox and name */
+.grocery-item_check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+/* checkbox - green when ticked */
+.grocery-item_check input {
+  width: 1.15rem;
+  height: 1.15rem;
+  accent-color: #2f5a27;
+  cursor: pointer;
+}
+
+/* <span> – item name, capitalized */
+.grocery-item_name {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* strike through and mute grocery item when checked off */
+.grocery-item-checked .grocery-item_name {
+  color: #5c5c55;
+  text-decoration: line-through;
+}
+
+/* <p> – quantity and source indented to line up under name */
+.grocery-item_meta {
+  margin: 0.2rem 0 0 1.75rem;
+  color: #5c5c55;
+  font-size: 0.9rem;
+}
+
+/* <form> – edit mode - labels, inputs and buttons in one wrapping row */
+.grocery-item_form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+/* <label>s in the edit form */
+.grocery-item_form label {
+  font-weight: 600;
+}
+
+/* name and quantity <input>s in the edit form */
+.grocery-item_form input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #b5b5aa;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* <div> – Edit/Remove or Save/Cancel */
+.grocery-item_actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* buttons – green fill */
+.grocery-item_actions button {
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #2f5a27;
+  border-radius: 6px;
+  background: #2f5a27;
+  color: #ffffff;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* buttons while list is saving */
+.grocery-item_actions button:disabled,
+.grocery-item_check input:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* Cancel button – green outline */
+.grocery-item_actions .grocery-item_secondary {
+  background: none;
+  color: #2f5a27;
+}
+
+/* Remove button – red outline */
+.grocery-item_actions .grocery-item_delete {
+  border-color: #a3261c;
+  background: none;
+  color: #a3261c;
+}
+
+/* <p role="alert"> – save/remove error under the row */
+.grocery-item_error {
+  margin: 0.5rem 0 0;
+  color: #a3261c;
+  font-weight: 600;
+}
