@@ -15,7 +15,6 @@ A meal planning site that helps you use up what you buy.
 
 CS5610 Web Development, Northeastern University, Fall 2026
 Instructor: John Alexis Guerra Gómez
-Class link: CLASS_LINK_FROM_PROJECT_2_README
 
 ## Objective
 
@@ -143,18 +142,9 @@ personas, user stories, and wireframes.
 
 We used Claude (Anthropic) as an assistant on this project.
 
-**Rajvi:** used Claude to help plan the work and to help write and debug the
-recipes routes, meal plan routes, Passport login, and the ingredient-reuse
-suggestions, as well as the React components for login, the recipe browser
-and filters, recipe detail, the meal plan list, the weekly planner, and the
-add-to-plan dialog. Claude also helped set up the repo (Vite proxy, ESLint and
-Prettier), drafted this README and the design document, and generated the box
-wireframes from our screen layouts. I reviewed and tested all of this code and
-changed it where needed.
+**Rajvi:** used Claude to help plan the work and to help write and debug the code, as well as the React components. Claude helped to have a clear formatted readme. 
 
-**Jharshini:** used Claude to help draft the build document, the work split
-and timeline, and the recommended file structure, and to convert the Kaggle
-CSV into the JSON seed file. JHARSHINI_ADDS_ANY_OTHER_USE
+**Jharshini:** 
 
 ## License
 
