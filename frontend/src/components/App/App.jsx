@@ -8,6 +8,7 @@ import MealPlanList from "../MealPlanList/MealPlanList.jsx";
 import PantryManager from "../PantryManager/PantryManager.jsx";
 import PantrySearch from "../PantrySearch/PantrySearch.jsx";
 import GroceryListIndex from "../GroceryListIndex/GroceryListIndex.jsx";
+import HelpPage from "../HelpPage/HelpPage.jsx";
 
 // The screens in the nav, in order
 const VIEWS = [
@@ -42,13 +43,9 @@ function renderView(viewId) {
     return <GroceryListIndex />;
   }
 
-  const view = VIEWS.find((v) => v.id === viewId);
-  return (
-    <section>
-      <h1>{view.label}</h1>
-      <p>This screen is being built.</p>
-    </section>
-  );
+  if (viewId === "help") {
+    return <HelpPage />;
+  }
 }
 
 function App() {
