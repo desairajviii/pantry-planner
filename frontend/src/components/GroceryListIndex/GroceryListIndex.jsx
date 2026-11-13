@@ -21,7 +21,7 @@ function GroceryListIndex() {
   const [plans, setPlans] = useState(null);
   const [loadError, setLoadError] = useState("");
   const [reloadKey, setReloadKey] = useState(0);
-  const [selectedId, setSelectedId] = useState(null); 
+  const [selectedId, setSelectedId] = useState(null);
 
   const [planId, setPlanId] = useState("");
   const [name, setName] = useState("");
