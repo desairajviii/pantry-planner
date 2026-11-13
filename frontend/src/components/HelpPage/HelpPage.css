@@ -1,0 +1,100 @@
+/* <article> – whole help page */
+.help-page {
+  max-width: 46rem;
+}
+
+/* <h1> – "How to use Pantry Planner" heading */
+.help-page_title {
+  margin: 0 0 0.5rem;
+}
+
+/* <p> – intro under heading */
+.help-page_intro {
+  margin: 0 0 1.5rem;
+  color: #5c5c55;
+}
+
+/* <nav> – "On this page" box */
+.help-page_toc {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+/* <h2> – "On this page" heading */
+.help-page_toc-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+/* <ul> – section links, no bullets*/
+.help-page_toc-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* <a>s – section links and dataset link, green to match buttons */
+.help-page a {
+  color: #2f5a27;
+  font-weight: 600;
+}
+
+/* <section> – help section */
+.help-page_section {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #dcdcd4;
+  border-radius: 8px;
+  background: #ffffff;
+  scroll-margin-top: 1rem;
+}
+
+/* <h2> – section heading */
+.help-page_section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+/* <h3> – "Reuse suggestions" and "Use-by dates" subheadings */
+.help-page_subtitle {
+  margin: 1rem 0 0.25rem;
+  font-size: 1rem;
+}
+
+/* <p>s inside section */
+.help-page_section p {
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
+}
+
+/* last <p> in section */
+.help-page_section p:last-child {
+  margin-bottom: 0;
+}
+
+/* <ol> – numbered steps */
+.help-page_steps {
+  margin: 0 0 0.75rem;
+  padding-left: 1.4rem;
+  line-height: 1.5;
+}
+
+/* <li> – one step */
+.help-page_steps li {
+  margin-bottom: 0.4rem;
+}
+
+/* <p> – caveat under steps*/
+.help-page_section .help-page_note {
+  padding: 0.6rem 0.9rem;
+  border-left: 4px solid #b7791f; /* amber bar */
+  border-radius: 4px;
+  background: #fdf3dc;
+  font-size: 0.95rem;
+}
