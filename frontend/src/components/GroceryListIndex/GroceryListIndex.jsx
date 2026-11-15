@@ -9,6 +9,10 @@ import { formatDate } from "../../utils/dates.js";
 import GroceryListView from "../GroceryListView/GroceryListView.jsx";
 import "./GroceryListIndex.css";
 
+// No props - the component loads its own data from the API
+// no import due to eslint error
+GroceryListIndex.propTypes = {};
+
 // Show a creation timestamp as a date in the user's time zone
 // iso = createdAt from the API
 function formatCreated(iso) {

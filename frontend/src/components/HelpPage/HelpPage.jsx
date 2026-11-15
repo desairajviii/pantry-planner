@@ -2,6 +2,9 @@ import PropTypes from "prop-types";
 import { SOON_DAYS } from "../../utils/expiry.js";
 import "./HelpPage.css";
 
+// No props - static instructions page
+HelpPage.propTypes = {};
+
 // Page sections in order
 const SECTIONS = [
   { id: "help-recipes", title: "Find recipes" },

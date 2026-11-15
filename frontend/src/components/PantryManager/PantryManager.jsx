@@ -9,6 +9,10 @@ import { SOON_DAYS, expiryStatus } from "../../utils/expiry.js";
 import PantryItem from "../PantryItem/PantryItem.jsx";
 import "./PantryManager.css";
 
+// No props - the component loads its own data from the API
+// no import due to eslint error
+PantryManager.propTypes = {};
+
 const EMPTY_FORM = { name: "", quantity: "", useBy: "" }; // blank add form
 
 // Keep items alphabetical after a local add or rename, matching the API's sort

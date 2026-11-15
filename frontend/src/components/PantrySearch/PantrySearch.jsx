@@ -12,6 +12,10 @@ const MISSING_OPTIONS = [0, 1, 2, 3, 5]; // options for "missing at most"
 const DEFAULT_MAX_MISSING = 3; // matches backend
 const RESULT_LIMIT = 50; // max results returned by backend
 
+// No props - the component loads its own data from the API
+// no import due to eslint error
+PantrySearch.propTypes = {};
+
 // One string per search, to checj if the results on screen
 // match the current filters
 function searchKey(filters, maxMissing) {
