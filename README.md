@@ -1,10 +1,14 @@
 # Pantry Planner
 
-A meal planning site that helps you use up what you buy.
+Plan meals from what you already have, use up what you buy, and make grocery
+lists for only what you still need.
 
-**Live app:** LIVE_URL_AFTER_DEPLOYMENT
+**Live app:** https://pantry-planner-pbyg.onrender.com
 
-![Pantry Planner weekly meal planner](docs/screenshot.png)
+The app runs on Render's free tier, so the first load after a while can take
+up to a minute while the server wakes up.
+
+![Weekly meal planner with reuse suggestions](docs/screenshot.png)
 
 ## Authors
 
@@ -13,7 +17,8 @@ A meal planning site that helps you use up what you buy.
 
 ## Class
 
-CS5610 Web Development, Northeastern University, Fall 2026
+CS5610 Web Development, Northeastern University, Fall 2026 
+
 Instructor: John Alexis Guerra Gómez
 
 ## Objective
@@ -32,12 +37,12 @@ what you already have, so food gets used before it goes bad.
 | Feature | What it does |
 |---|---|
 | Accounts | Register and log in with a username and password (Passport, local strategy, with sessions) |
-| Recipe browser | Search by name and filter by diet, cooking time, course, cuisine, and more, with pagination |
+| Recipe browser | Search by name and filter by diet, cooking time, steps, course, and cuisine, with pagination |
 | Weekly meal planner | Assign recipes to breakfast, lunch, and dinner for each day of the week |
-| Reuse suggestions | Recipes that share at least two ingredients with meals already in your plan, so leftovers get used |
-| Pantry | Add, edit, and remove what you have, with optional quantities and use-by dates |
-| Cook from your pantry | Recipes ranked by how few ingredients you're missing |
-| Grocery lists | Made from the recipes you plan to cook, leaving out what's already in your pantry |
+| Reuse suggestions | Recipes that share at least two ingredients with meals already in the plan, so leftovers get used |
+| Pantry | Add, edit, and remove what you have, with optional quantities and use-by dates. Expired and use-soon items are flagged. |
+| Cook from your pantry | Recipes ranked by fewest missing ingredients. Among equals, recipes that use soon-to-expire items come first. |
+| Grocery lists | Made from chosen recipes, leaving out pantry items and staples. Check items off, edit them, or add your own. |
 
 ## Tech stack
 
@@ -46,6 +51,7 @@ what you already have, so food gets used before it goes bad.
 - **Database:** MongoDB with the native Node.js driver (no Mongoose)
 - **Authentication:** Passport (local strategy) with `express-session`.
   Passwords are hashed with Node's built-in `crypto.scrypt`.
+- Deployed on Render, with MongoDB Atlas
 
 In development, Vite forwards `/api` requests to Express. In production,
 Express serves the built React app from the same origin, so no CORS library is
@@ -99,16 +105,16 @@ Open the Vite URL, create an account, and start planning.
 | `MONGO_URI` | `mongodb://localhost:27017` | MongoDB connection string |
 | `DB_NAME` | `pantry_planner` | Database name |
 | `SESSION_SECRET` | any long random string | Signs the login session cookie |
-| `PORT` | `3000` | Express port (hosting services set this themselves) |
+| `PORT` | `3000` | Express port (Render sets this itself) |
 
-Never commit `.env`. On a hosting service, set these in its dashboard.
+Never commit `.env`. On Render, set these in the dashboard.
 
 ### Scripts
 
 | Folder | Command | What it does |
 |---|---|---|
 | `backend` | `npm run dev` | Starts the server and restarts it on changes |
-| `backend` | `npm start` | Starts the server (production) |
+| `backend` | `npm start` | Starts the server (used by Render) |
 | `backend` | `npm run seed` | Replaces the `recipes` collection from `data/recipes.json` |
 | `backend` | `npm run lint` / `npm run format` | ESLint / Prettier |
 | `frontend` | `npm run dev` | Starts the Vite dev server |
@@ -121,14 +127,14 @@ Never commit `.env`. On a hosting service, set these in its dashboard.
 backend/     Express server, routes, Passport, MongoDB connection, seed script
 frontend/    React app: one folder per component (Component.jsx + Component.css)
 data/        recipes.json, the seeded recipe data
-docs/        design document and wireframes
+docs/        design document, wireframes, and screenshot
 ```
 
 ## Known limits
 
 - **Ingredient matching is by name.** "Chickpeas" won't match "garbanzo
-  beans," and "onion" won't match "onions." Pantry matching uses substrings,
-  so "egg" also matches "eggplant."
+  beans." Pantry matching uses substrings, so "onion" covers "yellow onions,"
+  but "egg" also covers "eggplant."
 - **Recipes have ingredient names but no quantities,** so grocery list
   quantities are left for you to fill in.
 - **Staples** like salt, pepper, water, and oil are treated as always on hand.
@@ -142,9 +148,12 @@ personas, user stories, and wireframes.
 
 We used Claude (Anthropic) as an assistant on this project.
 
-**Rajvi:** used Claude to help plan the work and to help write and debug the code, as well as the React components. Claude helped to have a clear formatted readme. 
+**Rajvi:** Used Claude to plan the work and to debug the code. I reviewed and tested the suggested changes by Claude and changed it where needed.
 
-**Jharshini:** 
+**Jharshini:** Used Claude for planning, including work
+split, timeline, and to convert the Kaggle CSV into the
+JSON seed file. Also used it for debugging and for implementation guidance
+when web sources weren't enough.
 
 ## License
 
