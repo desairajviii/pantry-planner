@@ -13,9 +13,9 @@ goes bad.
 Users browse recipes with filters (vegetarian, vegan, quick, easy, and more),
 plan their week, and keep track of their pantry. The app then helps use up
 ingredients in two ways: it suggests recipes that reuse ingredients already in
-the week's plan, and it flags pantry items that are close to their use-by date.
-Grocery lists skip what's already in the pantry, so users only buy what they
-need.
+the week's plan, and it flags pantry items that are expired or close to their
+use-by date. Grocery lists skip what's already in the pantry, so users only
+buy what they need.
 
 Recipes come from the Food.com Recipes and Interactions dataset on Kaggle
 (CC BY 4.0). A seed script loads 8,000 cleaned recipes into MongoDB.
@@ -151,9 +151,9 @@ that plan is already selected.
 ![Wireframe of the pantry screen](design/wireframe-pantry.png)
 
 A form to add an item with a name, an optional quantity, and an optional
-use-by date, above the list of pantry items. Items close to their use-by date
-are highlighted with a "use soon" label so they get used first. Each item can
-be edited in place or deleted.
+use-by date, above the list of pantry items. Expired items and items close to
+their use-by date are flagged with a label so they get used first. Each item
+can be edited in place or deleted.
 
 ### Cook from your pantry (`PantrySearch`)
 
@@ -162,9 +162,10 @@ be edited in place or deleted.
 Options to narrow the search by diet tags and by how many missing ingredients
 are allowed. Results show as recipe cards ranked by fewest missing
 ingredients, with each card listing what's missing, or saying the user has
-everything.
+everything. Among recipes missing the same number of ingredients, ones that
+use soon-to-expire pantry items come first.
 
-### Grocery lists (`GroceryListIndex`, `GroceryListView`)
+### Grocery lists (`GroceryListIndex`, `GroceryListView`, `GroceryItem`)
 
 ![Wireframe of the grocery list screens](design/wireframe-grocery-lists.png)
 
