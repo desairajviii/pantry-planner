@@ -208,4 +208,5 @@ function RecipeBrowser() {
   );
 }
 
+RecipeBrowser.propTypes = {};
 export default RecipeBrowser;

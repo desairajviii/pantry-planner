@@ -170,4 +170,5 @@ function MealPlanList() {
   );
 }
 
+MealPlanList.propTypes = {};
 export default MealPlanList;
